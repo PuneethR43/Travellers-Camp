@@ -21,10 +21,7 @@ Logged in user can Create, Edit/Update and Delete the Articles posted by them.
 8. moment
 9. Bootstrap
 10. sweetalert
-11. react-quill
-12. react-render-html
-13. react-jsx-parser
-14. multer
+11. multer
 
 # Packages used on Back End
 
