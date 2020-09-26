@@ -1,26 +1,38 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import moment from 'moment'
+import renderHTML from 'react-render-html'
 
 class UserPosts extends React.Component{
 
     render(){
-        // console.log("user posts", this.props.singleUser)
-        // console.log("user posts", this.props.posts)
         return(
-            <div>
-                <h1>User Posts</h1>
-                <ul>
+            <div className="container-fluid">
+                <h3>Posts by {this.props.singleUser?.username}</h3>
                 {
-                    this.props.posts.map((post) => {
-                        return (
-                            <li key = {post._id}>
-                               <Link to = { `/post/${post._id}` }> {post.title} </Link> 
-                            </li>
-                        )
+                    this.props.posts.reverse().map((post) => 
+                    {
+                        return(
+                            
+                            <div class="row">
+                            <div className="col-md-2"></div>
+                            
+                            <div className="col-md-8 shadow-lg card">
+                                
+                                <img src={`http://localhost:5000/${post.image}`}  alt="" width = "870px" height = "400"></img>
+                                <div className="card-body" >
+                                    <span className="card-title">{ renderHTML(post.title) }</span>
+                                    <p className="card-text">{ renderHTML(post.description) }</p>
+                                    <p className="card-text"><small className="text-muted">Created {moment(post.createdAt).startOf('hour').fromNow()}</small></p>
+                                    <Link to = { `/post/${post._id}` } className="card-title"> read more...</Link> 
+                               </div>
+                            </div>
+                            </div>
+                        )  
                     })
+                    
                 }
-                </ul>
             </div>
         )
     }
@@ -30,7 +42,7 @@ const mapStateToProps = (state, props) => {
     const user_id = props.match.params.userId
     return{
         allUsers : state.allUsers,
-        // singleUser : state.allUsers.find((user) => user.id == user_id),
+        singleUser : state.allUsers.find((user) => user._id == user_id),
         posts : state.posts.filter((post) => post.userId === user_id)
     }
 }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import swal from 'sweetalert'
 export const getPosts = (posts) => {
     return { type : 'GET_POSTS', payload : posts }
 }
@@ -54,18 +54,13 @@ export const startCreatePost = (formData, redirect) => {
             }
         })
         .then((response) => {
-            // const post = response.data
-            // console.log(response.data)
-            // if(response.data.hasOwnProperty('errors')){
-            //     console.log(response.data.errors)
-               
-            // }
             const post = response.data
-            if(post.hasOwnProperty('errors')){
-                console.log(post.errors)
+            if(post.hasOwnProperty('error')){
+                alert(post.error)
             }else{
                 dispatch(setPost(post))
-                alert('successfully posted')
+                swal("successfully posted!", "Go ahead and post more!", "success")
+                // alert('successfully posted')
                 redirect()
             }
             
@@ -82,22 +77,35 @@ export const removePost = (deletedPost) => {
 
 export const startRemovePost = (postID) => {
     return(dispatch) => {
-        const confirm = window.confirm("Are You Sure?")
-        if(confirm){
-            axios.delete(`http://localhost:5000/api/post/${postID}`, {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                axios.delete(`http://localhost:5000/api/post/${postID}`, {
                 headers : {
                     'Authorization' : localStorage.getItem('Authorization')
                 }
             } )
             .then((response) => {
                 const deletedPost = response.data
-                console.log(deletedPost)
                 dispatch(removePost(deletedPost))
             })
             .catch((err) => alert(err))
-        }
-    }
-}
+        
+            swal(" Your file has been deleted!", {
+                icon: "success",
+
+              })
+            } else {
+              swal("Your Post file is safe!");
+            }
+          })
+}}
 
 export const setUpdatedPost= (updatedPost) => {
     return { type : 'UPDATE_POST', payload : updatedPost }
@@ -117,7 +125,8 @@ export const startEditPost = (formData, postID, redirect) => {
                 alert(updatedPost.errors)
             }else{
                 dispatch(setUpdatedPost(updatedPost))
-                alert('successfully updated')
+                swal("Good Job!", "successfully updated!", "success")
+                // alert('successfully updated')
                 redirect()
             }
             
@@ -128,6 +137,10 @@ export const startEditPost = (formData, postID, redirect) => {
     }
 }
 
+export const setComments = (comments) => {
+    return { type : 'SET_COMMENTS', payload : comments }
+}
+
 export const startCreateComment = (id, formData) => {
     return(dispatch) => {
         axios.post(`http://localhost:5000/api/comment/${id}`, formData, {
@@ -136,7 +149,8 @@ export const startCreateComment = (id, formData) => {
             }
         })
         .then((response) => {
-            console.log(response.data)
+            const comments = response.data
+            dispatch(setComments(comments))
         })
         .catch((err) => {
             console.log(err)
@@ -157,11 +171,31 @@ export const startGetComments = () => {
         })
         .then((response) => {
             const comments = response.data
-            console.log("all comments",response.data)
             dispatch(getComments(comments))
         })
         .catch((err) => {
             console.log(err)
         })
+        }
+    }
+
+    export const removeComment = (id) => {
+        return { type : 'DELETE_COMMENT', payload : id }
+    }
+
+    export const startRemoveComment = (id) => {
+        return(dispatch) => {
+            axios.delete(`http://localhost:5000/api/comment/${id}`, {
+                headers : {
+                    'Authorization' : localStorage.getItem('Authorization')
+                }
+            })
+            .then((response) => {
+                const deletedComment = response.data
+                dispatch(removeComment(deletedComment))
+            })
+            .catch((err) => {
+                alert(err)
+            })
         }
     }

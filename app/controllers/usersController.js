@@ -8,6 +8,8 @@ usersController.register = (req, res) => {
     const body = req.body
     const user = new User(body)
 
+    user.profile = req.file.path
+
     User.find({ email: body.email })
         .then((value) => {
             if(value.length == 0){
@@ -88,38 +90,25 @@ usersController.logout = (req, res) => {
         })
 }
 
-// usersController.logout = (req, res) => {
-//     const token = req.token
-//     const user = req.user
-
-//     User.findByIdAndUpdate(user._id, { $pull : { tokens : { token } } })
-//         .then(() => {
-//             res.json({message : 'successfully logged out'})
-//         })
-//         .catch((err) => {
-//             res.json(err)
-//         })
-// }
-
-/*usersController.destroy = (req, res) => {
-    //const postId = req.params.id
+usersController.update = (req, res) => {
     const userId = req.userId
-    
-    User.findOneAndDelete( {user : userId} )
+    const body = req.body
+console.log("update",userId)
+    User.findByIdAndUpdate( userId, body, {new : true, runValidators : true} )
         .then((user) => {
+            
             if(user){
-                res.json(user)
+                console.log("update",user)
+                res.json({user})
             } else {
                 res.json({
-                    err : "User you are trying to delete is not found."
+                    err : "user not found"
                 })
             }
         })
         .catch((err) => {
-            res.json({
-                err : "User you are trying to delete is not found."
-            })
+            res.json(err)
         })
-}*/
+}
 
 module.exports = usersController

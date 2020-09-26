@@ -17,12 +17,13 @@ const postsReducer = (state = initialValue, action) => {
             // console.log('reducer', action.payload)
             return state.map((post) =>{
                 if(post._id == action.payload._id){
-                    return Object.assign( {}, post, action.payload )
+                    return Object.assign( {},post,action.payload )
                 } else {
-                    return Object.assign( {}, post )
+                    return Object.assign( {},post )
                 }
             })
         }
+        
         default : {
             return [...state]
         }

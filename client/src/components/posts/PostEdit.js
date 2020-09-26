@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { startEditPost } from '../../actions/postsAction'
+import {GiCancel} from 'react-icons/gi'
+import { startEditPost,startGetPosts } from '../../actions/postsAction'
 
 
 class PostEdit extends React.Component{
@@ -8,16 +9,44 @@ class PostEdit extends React.Component{
         super(props)
         this.state = {
             title : props.post?.title,
-            body : props.post?.body
+            body : props.post?.body,
+            description : props.post?.description
         }
     }
+   
+    componentDidUpdate(){
+        this.props.dispatch(startGetPosts())
+        
+    }
+    componentDidMount(){
+        this.props.dispatch(startGetPosts())
+    }
 
+    handleTitle = (e) => {
+        const title = e.target.value
+        this.setState({
+            title
+        })
+    }
+    
+    handleDescription = (e) => {
+        const description = e.target.value
+        this.setState({
+            description
+        })
+    }
+
+    handleBody = (e) => {
+        const body = e.target.value
+        this.setState({
+            body
+        })
+    }
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
         })
     }
-
     handleCancel = () => {
         this.props.history.push('/myPosts')
     }
@@ -26,6 +55,7 @@ class PostEdit extends React.Component{
         e.preventDefault()
         const formData = {
             title : this.state.title,
+            description : this.state.description,
             body : this.state.body
         }
         // console.log("edit", this.props.post._id)
@@ -38,16 +68,46 @@ class PostEdit extends React.Component{
     render(){
        
         return(
-            <div>
-                <h1>Edit Page</h1>
-                <form onSubmit = {this.handleSubmit} >
-                    <h3> TITLE:-</h3>
-                    <textarea rows = "1" cols = "40" name = "title" value = {this.state.title} onChange = {this.handleChange} />
-                    <h3> BODY:- </h3>
-                    <textarea rows = "20" cols = "80" name = "body" value = {this.state.body} onChange = {this.handleChange} />
-                    <input type = "submit" value = "Update" className = "btn btn-dark"/>
-                    <button onClick = {this.handleCancel} className = "btn btn-dark">cancel</button>
-                </form>
+            <div className="container-fluid row">
+                <div className="col-md-2"></div>
+                    <div className="card col-md-8"  style={{marginTop:50}}>
+                    <div className="form-group shadow-textarea" style={{width:900,}}>
+                        <form onSubmit = {this.handleSubmit}>
+                            <label className="create-post"> Title </label>
+
+                            <input 
+                                type="text" 
+                                id="fname" 
+                                name="fname" 
+                                id="title"
+                                value = {this.state.title} 
+                                onChange = {this.handleChange}
+                                className="input"
+                            />
+                            
+                            <label className="create-post"> Description </label>
+                            <textarea 
+                                id = "description"
+                                name="description"
+                                value={this.state.description}
+                                onChange={this.handleChange}
+                                className="textarea"
+                            />
+                            
+                            <label className="create-post"> Body </label>
+                            <textarea
+                                id = "body"
+                                description="body"
+                                value = {this.state.body} 
+                                onChange = {this.handleChange}
+                                className="textarea"
+                            />
+
+                            <input type = "submit" value = "Update" className = "btn btn-outline-secondary"/>
+                            <button onClick = {this.handleCancel} className = "btn btn-outline-danger"><GiCancel/></button>
+                        </form>
+                    </div>
+                    </div>
             </div>
         )
     }

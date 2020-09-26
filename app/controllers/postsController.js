@@ -1,4 +1,5 @@
 const Post = require('../models/post')
+// const renderHTML = require('react-render-html')
 const postsController = {}
 
 postsController.list = (req, res) => {
@@ -24,7 +25,7 @@ postsController.myPosts = (req, res) => {
 
 postsController.show = (req, res) => {
     const id = req.params.id 
-    Post.findById(id).populate('comments')
+    Post.findById(id)
         .then((post) => {
             res.json(post)
         })
@@ -50,19 +51,20 @@ postsController.create = (req, res) => {
     post.image = req.file.path
     post.userId = req.userId
     
-    post.save()
+    if(body.title == '' || body.body == ''){
+        res.json({
+            error : 'Fields cannot be empty'
+        })
+    }else{
+        post.save()
         .then((post) => {
-            // if(post.hasOwnProperty("errors")){
-            //     res.json(errors.message)
-            // }else{
-            //     res.json(post)
-            // }
-            res.json(post)
+           res.json(post)
         })
         .catch((err) => {
             res.json(err)
         })
-
+    }
+    
 }
 
 postsController.update = (req, res) => {

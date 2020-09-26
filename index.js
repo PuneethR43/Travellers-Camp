@@ -11,7 +11,7 @@ app.use(cors())
 configureDB()
 app.use(express.json())
 app.use(router)
-//app.use(cors())
+app.use('/uploads', express.static('uploads'))
 
 app.listen(port, () => {
     console.log('server running on port', port)

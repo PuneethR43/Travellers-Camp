@@ -5,6 +5,13 @@ const usersReducer = (state = initialValue, action) => {
         case 'SET_USER' : {
             return {...action.payload}
         }
+        case 'EDIT_USER' : {
+            // return {...action.payload}
+            // return Object.assign( {},state, action.payload )
+            
+            let name = Object.assign( {}, action.payload  )
+            return state = name
+        }
         default : {
             return {...state}
         }

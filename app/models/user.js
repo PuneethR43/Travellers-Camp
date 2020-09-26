@@ -28,6 +28,12 @@ const userSchema = new Schema({
         minlength : 6,
         maxlength : 15,
         required : [ true, 'password needs to be between 6 - 15 characters' ]
+    },
+    about : {
+        type : String
+    },
+    profile : {
+        type : String
     }
 })
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export const startRegisterUser = (formData, redirect) => {
     return(dispatch) => {
@@ -9,7 +10,12 @@ export const startRegisterUser = (formData, redirect) => {
                 if(response.data.hasOwnProperty('errors')){
                     alert(response.data.errors)
                 }else{
-                    alert('successfully registered')
+                    swal({
+                        title: "Registered Successfully!",
+                        text: "You Registered!",
+                        icon: "success",
+                        button: "Aww yiss!",
+                      });
                     redirect()
                 }
             })
@@ -29,9 +35,10 @@ export const startRegisterUser = (formData, redirect) => {
                 .then((response) => {
                    // console.log(response.data)
                     if(response.data.hasOwnProperty('errors')){
-                        alert(response.data.errors)
+                        // alert(response.data.errors)
+                        swal("Invalid Credentials!", "Try again!");
                     }else{
-                        alert('successfully logged in')
+                        swal("Good job!", "successfully logged in!", "success")
                         localStorage.setItem('Authorization', response.data.token)
                         axios.get('http://localhost:5000/api/user/account', {
                             headers : {
@@ -44,7 +51,13 @@ export const startRegisterUser = (formData, redirect) => {
                         redirect()
                     })
                     .catch((err) => {
-                        alert(err)
+                        // alert(err)
+                        swal({
+                            title: "Ivalid Credentials",
+                            text: "You Registered!",
+                            icon: "danger",
+                            button: "Aww yiss!",
+                          });
                     })  
                     }
                 })
@@ -83,22 +96,23 @@ export const startRegisterUser = (formData, redirect) => {
             .then((response) => {
                 if(response.data.message){
                     localStorage.removeItem('Authorization')
-                    alert(response.data.message)
+                    swal("You Logged out","Come back agin!", "success")
+                    // alert(response.data.message)
                     dispatch(setUser({}))
                     window.location.href = "/"
-                }
-            })
+            }
+        })
             .catch((err) => {
-                alert(err)
+                // alert(err)
             })
         }
     }
 
-    export const setAllUsers = (users) => {
-        return { type : 'SET_ALL_USERS', payload : users }
+    export const getAllUsers = (users) => {
+        return { type : 'GET_ALL_USERS', payload : users }
     }
     
-    export const startGetAllUser = () => {
+    export const startGetAllUsers = () => {
         return(dispatch) => {
             axios.get('http://localhost:5000/api/users', {
                 headers : {
@@ -108,10 +122,41 @@ export const startRegisterUser = (formData, redirect) => {
             .then((response) => {
                 const users = response.data
                 // console.log("get all users", users)
-                dispatch(setAllUsers(users))
+                dispatch(getAllUsers(users))
             })
             .catch((err) => {
                 alert(err)
             })
         }
     }
+
+    export const updateUser = (user) => {
+        return { type : 'EDIT_USER', payload: user }
+    }
+
+    export const startUpdateUser = (formData, redirect) => {
+        return(dispatch) => {
+           console.log('user action',formData)
+           axios.put(`http://localhost:5000/api/user/update` , formData, {
+            headers : {
+                'Authorization' : localStorage.getItem('Authorization')
+            }
+        })
+                .then((response) => {
+                   
+                    console.log(response.data)
+                    if(response.data.hasOwnProperty('errors')){
+                        alert(response.data.errors)
+                    }else{
+                        const user = response.data
+                        swal("Good Job!","Updated Successfully!", "success")
+                        // alert('successfully updated')
+                        dispatch(updateUser(user))
+                        redirect()
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+        }

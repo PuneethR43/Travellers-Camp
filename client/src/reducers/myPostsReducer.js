@@ -22,6 +22,7 @@ const myPostsReducer = (state = initialValue, action) => {
                 }
             })
         }
+        
         default : {
             return [...state]
         }

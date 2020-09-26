@@ -24,17 +24,25 @@ class CommentsForm extends React.Component {
         }
         this.props.dispatch(startCreateComment(this.props.data, formData))
         this.state.body = ''
-        
     }
 
     render(){
-        console.log("comments form",this.props.data)
+        // console.log("comments form",this.props.data)
         return (
-            <div>
-                <h2>Add Comment</h2>
+             <div className="md-form amber-textarea active-amber-textarea">
+                <i className="fas fa-pencil-alt prefix"></i>
                 <form onSubmit={this.handleSubmit}>
-                    <textarea value={this.state.body} onChange={this.handleChange} name="body"></textarea><br/>
-                    <input type="submit" />
+                    <label htmlFor="form22"/>
+                    <textarea 
+                        id="form22" 
+                        className="md-textarea form-control" 
+                        rows="3" 
+                        value={this.state.body} 
+                        onChange={this.handleChange} 
+                        name="body"
+                        placeholder="Add Comments..."
+                    />
+                    <input type="submit" className="btn btn-primary" value="Add" />
                 </form>
             </div>
         )
