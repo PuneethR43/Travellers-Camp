@@ -22,8 +22,8 @@ class UserPosts extends React.Component{
                                 
                                 <img src={`http://localhost:5000/${post.image}`}  alt="" width = "870px" height = "400"></img>
                                 <div className="card-body" >
-                                    <span className="card-title">{ renderHTML(post.title) }</span>
-                                    <p className="card-text">{ renderHTML(post.description) }</p>
+                                    <span className="card-title title">{ post.title }</span>
+                                    <p className="card-text">{ post.description }</p>
                                     <p className="card-text"><small className="text-muted">Created {moment(post.createdAt).startOf('hour').fromNow()}</small></p>
                                     <Link to = { `/post/${post._id}` } className="card-title"> read more...</Link> 
                                </div>

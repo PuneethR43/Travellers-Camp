@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Avatar from 'react-avatar'
 import moment from'moment'
 import { startGetPosts } from '../../actions/postsAction'
+import { startGetAllUsers } from '../../actions/userAction'
 import './layout/layout.css'
 import {userAvatar} from '../../selectors/postAvatar'
 
@@ -14,6 +15,7 @@ class PostsList extends React.Component{
     
     componentDidMount() {
         this.props.dispatch(startGetPosts())
+        this.props.dispatch(startGetAllUsers())
     }
 
     handleLoad = () => {
@@ -28,12 +30,11 @@ class PostsList extends React.Component{
         // console.log("Posts List",this.props.allUsers?._id)
         return(
             <div className="container-fluid" >
-                <h1>Posts List - {this.props.posts?.length}</h1>
                 {
-                    this.props.posts.slice(0, this.state.count).map((post) => 
+                    this.props.posts.reverse().slice(0, this.state.count).map((post) => 
                     {
-                        let name = userAvatar(this.props.allUsers, post.userId)
-                        console.log("PostList selector",name)
+                        let avatars = userAvatar(this.props.allUsers, post.userId)
+
                         return(
                             <div className="row">
                             <div className="col-md-2"></div>
@@ -44,11 +45,30 @@ class PostsList extends React.Component{
                                 </div>
                             <div className="col-md-8">
                             <div className="card-body" >
-                                    <span className="title">{ post.title }</span>
-                                    <p className="card-text">{ post.description }</p>
-                                    <p className="card-text"><small className="text-muted">Created {moment(post.createdAt).startOf('hour').fromNow()}</small></p>
-                                    <Link to = { `/post/${post._id}` } className="card-title"> read more...</Link> 
-                                    {name.username}
+                                <span className="title">{ post.title }</span>
+                                <p className="card-text">{ post.description }</p>
+                                {
+                                    avatars?.profile ? (
+                                        <img src={`http://localhost:5000/${avatars?.profile}`} 
+                                            height="40" 
+                                            width="40" 
+                                            alt="Post" 
+                                            className="rounded-circle"
+                                        />
+                                        ) : (
+                                                <Avatar 
+                                                    color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue'])} 
+                                                    name={avatars?.username} 
+                                                    round={true} 
+                                                    textSizeRatio={1.75}
+                                                />
+                                            )
+                                }
+                                <h6>{avatars?.username}</h6>
+                                <p className="card-text"><small className="text-muted">Created {moment(post.createdAt).startOf('hour').fromNow()}</small></p>
+                                <Link to = { `/post/${post._id}` } className="card-title"> read more...</Link> 
+                                
+                                
                             </div>
                             </div>
                             </div>

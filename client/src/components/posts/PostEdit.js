@@ -77,8 +77,8 @@ class PostEdit extends React.Component{
 
                             <input 
                                 type="text" 
-                                id="fname" 
-                                name="fname" 
+                                id="title" 
+                                name="title" 
                                 id="title"
                                 value = {this.state.title} 
                                 onChange = {this.handleChange}

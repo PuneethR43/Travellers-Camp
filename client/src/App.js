@@ -48,9 +48,9 @@ function App(props){
                                     <li className="nav-item">
                                         <Link to = "/posts" className="nav-link"> Posts </Link>
                                     </li>
-                                    <li className="nav-item">
+                                    {/* <li className="nav-item">
                                         <Link to = "/myPosts" className="nav-link"> My Posts </Link>
-                                    </li>
+                                    </li> */}
                                     <li className="nav-item">
                                         <Link to = "/create" className="nav-link"> Create Post </Link>
                                     </li>

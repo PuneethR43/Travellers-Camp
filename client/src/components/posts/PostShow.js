@@ -46,11 +46,11 @@ class PostShow extends React.Component{
         // console.log("post show",body)
         return(
             
-            <div className="container-fluid">
+            <div className="container-fluid " >
                 {
                     <div className="row">
                         <div className="col-md-2"></div>
-                        <div className="card col-md-8">
+                        <div className="card col-md-8 shadow-lg" style={{margin:10}}>
                 <h1 className="title">{title}</h1>
                             {
                                 this.props.singleUser?.profile ? (
