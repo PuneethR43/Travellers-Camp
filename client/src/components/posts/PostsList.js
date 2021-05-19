@@ -3,42 +3,63 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Avatar from 'react-avatar'
 import moment from'moment'
+import InfiniteScroll from 'react-infinite-scroll-component'
+
 import { startGetPosts } from '../../actions/postsAction'
 import { startGetAllUsers } from '../../actions/userAction'
-import './layout/layout.css'
 import {userAvatar} from '../../selectors/postAvatar'
 
 class PostsList extends React.Component{
     state = {
-            count : 3
-        }
+        items: 3,
+        hasMoreItems: true
+    }
     
     componentDidMount() {
         this.props.dispatch(startGetPosts())
         this.props.dispatch(startGetAllUsers())
     }
-
-    handleLoad = () => {
-        this.setState((prevState) => {
-            return {
-                count : prevState.count+2
-            }
-        })
-    }
+    loadMore() {
+        if(this.state.items===200){
+          
+          this.setState({ hasMoreItems: false});
+        }else{
+            setTimeout(() => {
+            this.setState({ items: this.state.items + 20});
+        }, 2000);
+        }
+        
+      }
+    // handleLoad = () => {
+    //     this.setState((prevState) => {
+    //         return {
+    //             count : prevState.count+2
+    //         }
+    //     })
+    // }
 
     render(){
-        // console.log("Posts List",this.props.allUsers?._id)
         return(
             <div className="container-fluid" >
+                <h2 style={{textAlign:"center"}}>Blogs by our Travellers</h2>
+                {/* <InfiniteScroll
+                    dataLength={this.props.posts.length}
+                    // next={this.props.dispatch(startGetPosts())}
+                    // hasMore={true}
+                    loadMore={this.loadMore.bind(this)}
+                    hasMore={this.state.hasMoreItems}
+                    loader={<h4>Loading...</h4>}
+                    > */}
                 {
-                    this.props.posts.reverse().slice(0, this.state.count).map((post) => 
+                    this.props.posts.reverse().map((post) => 
                     {
                         let avatars = userAvatar(this.props.allUsers, post.userId)
 
                         return(
                             <div className="row">
                             <div className="col-md-2"></div>
-                            <div className="card mb-3 shadow-lg p-3 mb-5 bg-white rounded" style={{width:900}}>
+                            
+                            <div className="card mb-3 shadow-lg p-3 mb-5 mt-3 bg-white rounded" style={{width:900}}>
                             <div className="row no-gutters">
                                 <div className="col-md-4">
                                 <img src={`http://localhost:5000/${post.image}`}  alt="" width = "300" height = "280"></img>
@@ -64,7 +85,10 @@ class PostsList extends React.Component{
                                                 />
                                             )
                                 }
-                                <h6>{avatars?.username}</h6>
+                                <span> 
+                                    <h6> {avatars?.username} </h6> 
+                                </span>
+                                
                                 <p className="card-text"><small className="text-muted">Created {moment(post.createdAt).startOf('hour').fromNow()}</small></p>
                                 <Link to = { `/post/${post._id}` } className="card-title"> read more...</Link> 
                                 
@@ -76,15 +100,18 @@ class PostsList extends React.Component{
                             </div>
                                 
                         )
+                        
                          
                     })
+                
                 }
                 
                 {
-                    this.state.count < this.props.posts?.length && (<button onClick={this.handleLoad} className="btn btn-primary btn-lg">load more</button>)
+                    // this.state.count < this.props.posts?.length && (<button onClick={this.handleLoad} className="btn btn-primary btn-lg">load more</button>)
                     
                 }
                 
+                {/* </InfiniteScroll> */}
             </div>
             
         )

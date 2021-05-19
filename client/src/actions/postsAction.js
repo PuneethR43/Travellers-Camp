@@ -1,5 +1,6 @@
 import axios from 'axios'
 import swal from 'sweetalert'
+
 export const getPosts = (posts) => {
     return { type : 'GET_POSTS', payload : posts }
 }

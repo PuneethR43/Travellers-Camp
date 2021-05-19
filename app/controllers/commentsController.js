@@ -15,8 +15,6 @@ commentsController.create = async (req,res)=>{
   
     await comment.save()
     .then((cmt)=>{
-        
-           
         res.json(cmt)
      })
      .catch((err)=>{

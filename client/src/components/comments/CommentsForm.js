@@ -24,6 +24,9 @@ class CommentsForm extends React.Component {
         }
         this.props.dispatch(startCreateComment(this.props.data, formData))
         this.state.body = ''
+        this.setState({
+            body: ''
+        })
     }
 
     render(){

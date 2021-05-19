@@ -2,14 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
-import renderHTML from 'react-render-html'
 
 class UserPosts extends React.Component{
 
     render(){
         return(
             <div className="container-fluid">
-                <h3>Posts by {this.props.singleUser?.username}</h3>
+                <h2 style={{textAlign:"center"}}>Posts by {this.props.singleUser?.username}</h2>
                 {
                     this.props.posts.reverse().map((post) => 
                     {
@@ -18,7 +17,7 @@ class UserPosts extends React.Component{
                             <div class="row">
                             <div className="col-md-2"></div>
                             
-                            <div className="col-md-8 shadow-lg card">
+                            <div className="col-md-8 mt-2 mb-4 shadow-lg card">
                                 
                                 <img src={`http://localhost:5000/${post.image}`}  alt="" width = "870px" height = "400"></img>
                                 <div className="card-body" >

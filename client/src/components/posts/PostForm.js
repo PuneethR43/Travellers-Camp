@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 
 import { startCreatePost } from '../../actions/postsAction'
 import { connect } from 'react-redux'
@@ -16,7 +14,7 @@ class PostForm extends React.Component{
         }
     }
   
-      handleTitle = (e) => {
+    handleTitle = (e) => {
         const title = e.target.value
         this.setState({
           title 

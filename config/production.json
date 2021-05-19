@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://dbuser:dbuser@travellers-camp.2oemd.mongodb.net/travellers-camp-db?retryWrites=true&w=majority"
+}

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
+const config = require('config')
+const mongoUri = config.get('mongoURI')
 
 const configureDB = () => {
-    mongoose.connect('mongodb://localhost:27017/travellers-forum', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(() => {
             console.log('connected to db')
         })
@@ -11,3 +13,5 @@ const configureDB = () => {
 }
 
 module.exports = configureDB
+
+

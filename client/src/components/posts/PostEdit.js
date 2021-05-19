@@ -97,6 +97,7 @@ class PostEdit extends React.Component{
                             <label className="create-post"> Body </label>
                             <textarea
                                 id = "body"
+                                name = "body"
                                 description="body"
                                 value = {this.state.body} 
                                 onChange = {this.handleChange}
