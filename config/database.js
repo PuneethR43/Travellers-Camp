@@ -13,5 +13,3 @@ const configureDB = () => {
 }
 
 module.exports = configureDB
-
-

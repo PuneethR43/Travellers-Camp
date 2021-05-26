@@ -59,7 +59,7 @@ class PostForm extends React.Component{
 
     render(){
         return(
-            <div class="row">
+            <div className="row">
                 <div className="col-md-2"></div>
                 <div className="card col-md-8"  style={{marginTop:50}}>
                 <div className="form-group shadow-textarea" style={{width:900,}}>

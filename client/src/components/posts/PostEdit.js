@@ -3,14 +3,14 @@ import {connect} from 'react-redux'
 import {GiCancel} from 'react-icons/gi'
 import { startEditPost,startGetPosts } from '../../actions/postsAction'
 
-
 class PostEdit extends React.Component{
     constructor(props){
         super(props)
         this.state = {
             title : props.post?.title,
             body : props.post?.body,
-            description : props.post?.description
+            description : props.post?.description,
+            id: props.post?._id
         }
     }
    
@@ -62,11 +62,11 @@ class PostEdit extends React.Component{
         const redirect = () => {
             this.props.history.push('/myPosts')
         }
-        this.props.dispatch(startEditPost(formData, this.props.post._id, redirect))
+        this.props.dispatch(startEditPost(formData, this.props.match.params.id, redirect))
     }
 
     render(){
-       
+       console.log("PostEdit",this.state.id )
         return(
             <div className="container-fluid row">
                 <div className="col-md-2"></div>
@@ -97,8 +97,7 @@ class PostEdit extends React.Component{
                             <label className="create-post"> Body </label>
                             <textarea
                                 id = "body"
-                                name = "body"
-                                description="body"
+                                name="body"
                                 value = {this.state.body} 
                                 onChange = {this.handleChange}
                                 className="textarea"
@@ -115,7 +114,7 @@ class PostEdit extends React.Component{
 }
 
 const mapStateToProps = (state, props) => {
-    const post_ID = props.match.params.id 
+    const post_ID = props.match.params.id
     return{
         post : state.posts.find((post) => post._id == post_ID)
         

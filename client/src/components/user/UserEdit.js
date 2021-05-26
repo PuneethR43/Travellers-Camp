@@ -10,7 +10,7 @@ class UserEdit extends React.Component{
         this.state = {
             username : props.users?.username,
             email : props.users?.email,
-            about : props.users?props.users.about : ''
+            about : props.users?props.users.about : null
         }
     }
 
